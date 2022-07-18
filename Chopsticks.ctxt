@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Chopsticks
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment2.params=one\ two\ turn
+comment2.target=void\ printBoard(Player,\ Player,\ int)
+comment3.params=one\ two\ turn
+comment3.target=void\ attack(Player,\ Player,\ int)
+comment4.params=one\ two\ turn
+comment4.target=void\ split(Player,\ Player,\ int)
+numComments=5
