@@ -1,13 +1,19 @@
 import java.util.Scanner;
 
-public class Chopsticks_copy{
+public class Chopsticks_copy {
     public static void main(String[] args) {
+        // Setting scanner
         Scanner keyboard = new Scanner(System.in);
+        // Creating Players
         Player p1 = new Player();
         Player p2 = new Player();
+        // Initilizing turn counter
         int turn = 1;
+        // Checking end
         boolean end = false;
+        // Starting Gameplay
         do {
+            //
             int[] hands = { p1.getHand1(), p1.getHand2(), p2.getHand1(), p2.getHand2() };
             for (int i = 0; i < hands.length; i++) {
                 if (p1.getHand1() == 0 && p1.getHand2() == 0 || p2.getHand1() == 0 && p2.getHand2() == 0) {
@@ -24,7 +30,12 @@ public class Chopsticks_copy{
             if (action.equalsIgnoreCase("attack")) {
                 attack(p1, p2, turn);
             } else if (action.equalsIgnoreCase("split")) {
-                split(p1, p2, turn);
+                if (playerNum(turn).equals("PLAYER 1")) {
+                    split(p1);
+                }
+                if (playerNum(turn).equals("PLAYER 2")) {
+                    split(p2);
+                }
             }
             turn++;
         } while (!end);
@@ -36,16 +47,20 @@ public class Chopsticks_copy{
                 + ")%n");
         System.out.printf("\n\n                        %s is the Winner!!!\n\n\n", (turn % 2 == 0 ? "Player 1" : "Player 2"));
 
+        keyboard.close();
+    }
+
+    public static String playerNum(int turn) {
+        if (turn % 2 == 0) {
+            return "PLAYER 2";
+        } else {
+            return "PLAYER 1";
+        }
     }
 
     public static void printBoard(Player one, Player two, int turn) {
         System.out.print("\f");
-        String playerTurn = "";
-        if (turn % 2 == 0) {
-            playerTurn = "PLAYER 2";
-        } else {
-            playerTurn = "PLAYER 1";
-        }
+        String playerTurn = playerNum(turn);
         System.out.println("======================================================================");
         System.out.println("==                   Vrishabh & Ansh's Chopsticks                   ==");
         System.out.println("======================================================================");
@@ -57,9 +72,9 @@ public class Chopsticks_copy{
 
     }
 
+    // Attack the opponent
     public static void attack(Player one, Player two, int turn) {
         Scanner attackReader = new Scanner(System.in);
-        printBoard(one, two, turn);
         int victim;
         int attack;
         do {
@@ -68,7 +83,7 @@ public class Chopsticks_copy{
             System.out.println("               Which hand do you wish attack with?");
             attack = attackReader.nextInt();
         } while (attack != 1 && attack != 2 && victim != 1 && victim != 2);
-        if ((turn-1)%2 == 0) {
+        if ((turn - 1) % 2 == 0) {
             if (attack == 1) {
                 attack = one.getHand1();
             } else if (attack == 2) {
@@ -79,28 +94,25 @@ public class Chopsticks_copy{
                 victim = two.getHand1();
                 if (victim + attack > 5) {
                     two.setHand1((victim + attack) - 5);
-                } 
-                else if (victim + attack == 5) {
+                } else if (victim + attack == 5) {
                     two.setHand1(0);
-                }
-                else {
+                } else {
                     two.setHand1(victim + attack);
                 }
             } else if (victim == 2) {
                 victim = two.getHand2();
                 if (victim + attack > 5) {
                     two.setHand2((victim + attack) - 5);
-                }
-                else if (victim + attack == 5) {
+                } else if (victim + attack == 5) {
                     two.setHand2(0);
-                } 
-                else {
+                } else {
                     two.setHand2(victim + attack);
                 }
-                    
+                attackReader.close();
+
             }
 
-        } else if (turn%2 == 0) {
+        } else if (turn % 2 == 0) {
             if (attack == 1) {
                 attack = two.getHand1();
             } else if (attack == 2) {
@@ -111,29 +123,51 @@ public class Chopsticks_copy{
                 victim = one.getHand1();
                 if (victim + attack > 5) {
                     one.setHand1((victim + attack) - 5);
-                }
-                else if (victim + attack == 5) {
+                } else if (victim + attack == 5) {
                     one.setHand1(0);
-                }
-                else {
+                } else {
                     one.setHand1(victim + attack);
                 }
             } else if (victim == 2) {
                 victim = one.getHand2();
                 if (victim + attack > 5) {
                     one.setHand2((victim + attack) - 5);
-                }
-                else if (victim + attack == 5) {
+                } else if (victim + attack == 5) {
                     one.setHand2(0);
-                }
-                else {
+                } else {
                     one.setHand2(victim + attack);
                 }
             }
         }
     }
 
-    public static void split(Player one, Player two, int turn) {
-        return;
+    // Checking the end of the game
+    public static void endGame(Player one, Player two) {
+        if (one.getHand1() == 0 && one.getHand2() == 0) {
+            System.out.println("Player 2 has won");
+        } else if (two.getHand1() == 0 && two.getHand2() == 0) {
+            System.out.println("Player 1 has won");
+        }
+    }
+
+    // Splitting functionality
+    public static void split(Player player) {
+        Scanner splitRead = new Scanner(System.in);
+        int splitAmount = 0;
+        int handNum = 0;
+        do {
+            System.out.println("                   How much do you want to split: ");
+            splitAmount = splitRead.nextInt();
+            System.out.println("                Which hand do you want to split off: ");
+            handNum = splitRead.nextInt();
+        } while (handNum != 1 && handNum != 2);
+        if (handNum == 1 && splitAmount <= player.getHand1()) {
+            player.setHand2(player.getHand2() + splitAmount);
+            player.setHand1(player.getHand1() - splitAmount);
+        } else if (handNum == 2 && splitAmount <= player.getHand2()) {
+            player.setHand2(player.getHand2() + splitAmount);
+            player.setHand1(player.getHand1() - splitAmount);
+        }
+        splitRead.close();
     }
 }
