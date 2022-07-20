@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Chopsticks_copy{
+public class Chopsticks_copy {
     public static void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
         Player p1 = new Player();
@@ -21,7 +21,7 @@ public class Chopsticks_copy{
             if (action.equalsIgnoreCase("attack")) {
                 attack(p1, p2, turn);
             } else if (action.equalsIgnoreCase("split")) {
-                split(p1, p2, turn);
+                split(p1, turn);
             }
             turn++;
         } while (!end);
@@ -58,7 +58,7 @@ public class Chopsticks_copy{
             System.out.println("               Which hand do you wish attack with?");
             attack = attackReader.nextInt();
         } while (attack != 1 && attack != 2 && victim != 1 && victim != 2);
-        if ((turn-1)%2 == 0) {
+        if ((turn - 1) % 2 == 0) {
             if (attack == 1) {
                 attack = one.getHand1();
             } else if (attack == 2) {
@@ -69,28 +69,24 @@ public class Chopsticks_copy{
                 victim = two.getHand1();
                 if (victim + attack > 5) {
                     two.setHand1((victim + attack) - 5);
-                } 
-                else if (victim + attack == 5) {
+                } else if (victim + attack == 5) {
                     two.setHand1(0);
-                }
-                else {
+                } else {
                     two.setHand1(victim + attack);
                 }
             } else if (victim == 2) {
                 victim = two.getHand2();
                 if (victim + attack > 5) {
                     two.setHand2((victim + attack) - 5);
-                }
-                else if (victim + attack == 5) {
+                } else if (victim + attack == 5) {
                     two.setHand2(0);
-                } 
-                else {
+                } else {
                     two.setHand2(victim + attack);
                 }
-                    
+
             }
 
-        } else if (turn%2 == 0) {
+        } else if (turn % 2 == 0) {
             if (attack == 1) {
                 attack = two.getHand1();
             } else if (attack == 2) {
@@ -101,29 +97,40 @@ public class Chopsticks_copy{
                 victim = one.getHand1();
                 if (victim + attack > 5) {
                     one.setHand1((victim + attack) - 5);
-                }
-                else if (victim + attack == 5) {
+                } else if (victim + attack == 5) {
                     one.setHand1(0);
-                }
-                else {
+                } else {
                     one.setHand1(victim + attack);
                 }
             } else if (victim == 2) {
                 victim = one.getHand2();
                 if (victim + attack > 5) {
                     one.setHand2((victim + attack) - 5);
-                }
-                else if (victim + attack == 5) {
+                } else if (victim + attack == 5) {
                     one.setHand2(0);
-                }
-                else {
+                } else {
                     one.setHand2(victim + attack);
                 }
             }
         }
     }
 
-    public static void split(Player one, Player two, int turn) {
-        return;
+    public static void endersGame(Player one, Player two) {
+        if (one.getHand1() == 0 && one.getHand2() == 0) {
+            System.out.println("Player 2 has won");
+        } else if (two.getHand1() == 0 && two.getHand2() == 0) {
+            System.out.println("Player 1 has won");
+        }
+    }
+
+    public static void split(Player player, int turn) {
+        Scanner splitRead = new Scanner(System.in);
+        System.out.println("How much do you want to split: ");
+        int splitAmount = splitRead.nextInt();
+        System.out.println("Which hand do you want to split off: ");
+        int handNum = splitRead.nextInt();
+        if (handNum == 1 && splitAmount < player.getHand1()) {
+            player.setHand2(player.getHand2() + splitAmount);
+        }
     }
 }
