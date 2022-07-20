@@ -9,12 +9,8 @@ public class Chopsticks {
         boolean end = false;
         do {
             int[] hands = { playerOne.getHand1(), playerOne.getHand2(), playerTwo.getHand1(), playerTwo.getHand2() };
-            for (int i = 0; i < hands.length; i++) {
-                if (hands[i] <= 5) {
-                    end = true;
-                }
-            }
-            printBoard(playerOne, playerTwo, turn);
+            if (hands[0] == 0 && hands[1] == 0)
+                printBoard(playerOne, playerTwo, turn);
             System.out.println("                      What do you want to do?");
             String action = keyboard.nextLine();
             if (action.equalsIgnoreCase("attack")) {
@@ -23,7 +19,8 @@ public class Chopsticks {
                 split(playerOne, playerTwo, turn);
             }
             turn++;
-        } while (end);
+        } while (!end);
+
     }
 
     public static void printBoard(Player one, Player two, int turn) {
