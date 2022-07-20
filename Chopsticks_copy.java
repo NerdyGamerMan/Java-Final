@@ -15,6 +15,9 @@ public class Chopsticks_copy{
                     break;
                 }
             }
+            if (end) {
+                break;
+            }
             printBoard(p1, p2, turn);
             System.out.println("                      What do you want to do?");
             String action = keyboard.nextLine();
@@ -25,6 +28,13 @@ public class Chopsticks_copy{
             }
             turn++;
         } while (!end);
+        System.out.println("======================================================================");
+        System.out.println("==                   Vrishabh & Ansh's Chopsticks                   ==");
+        System.out.println("======================================================================");
+        System.out.printf("PLAYER 1: (" + p1.getHand1() + ", " + p1.getHand2()
+                + ")                                      PLAYER 2: (" + p2.getHand1() + ", " + p2.getHand2()
+                + ")%n");
+        System.out.printf("\n\n                        %s is the Winner!!!\n\n\n", (turn % 2 == 0 ? "Player 1" : "Player 2"));
 
     }
 
