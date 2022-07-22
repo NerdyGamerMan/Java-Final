@@ -78,30 +78,39 @@ public class Chopsticks {
 
     // Print Board method
     public static void printBoard(Player one, Player two, int turn) {
-        System.out.print("\f");
+        System.out.print("\f");// Clearing terminal
+
+        // setting player
         String playerTurn = "";
         if (turn % 2 == 0) {
             playerTurn = "PLAYER 2";
         } else {
             playerTurn = "PLAYER 1";
         }
+
+        // Printing header
         System.out.println("======================================================================");
         System.out.println("==                   Vrishabh & Ansh's Chopsticks                   ==");
         System.out.println("======================================================================");
         System.out.printf("PLAYER 1: (" + one.getHand1() + ", " + one.getHand2()
                 + ")                                      PLAYER 2: (" + two.getHand1() + ", " + two.getHand2()
                 + ")%n");
-        System.out.printf("%n                              " + playerTurn + "%n"
-                + "                           =============%n                           ATTACK||SPLIT%n");
+        System.out.printf("%n                              " + playerTurn + "%n"// Printing options
+                + "                           =============%n                           ATTACK||SPLIT%n");// Printing
+                                                                                                          // Options
 
     }
 
+    // attack method
     public static void attack(Player one, Player two, int turn) {
+        // Setting method variables
         Scanner attackReader = new Scanner(System.in);
         Player attacker = new Player();
         Player attacked = new Player();
         int victim;
         int attack;
+
+        // setting attacker and attacked (attacking player and defending player)
         if (turn % 2 == 0) {
             attacker = two;
             attacked = one;
@@ -109,11 +118,17 @@ public class Chopsticks {
             attacker = one;
             attacked = two;
         }
+
+        // Running Attack Sequence
         do {
             System.out.println("                Which hand do you wish to attack?");
             victim = attackReader.nextInt();
-            if (victim == 1 && attacked.getHand1() == 0) {
+
+            // if attacking hand 1...
+            if (victim == 1 && attacked.getHand1() == 0) {// checking if attacking dead hand
                 System.out.println("                      That hand is DEAD");
+
+                // repeating input until valid
                 do {
                     System.out.println("                Which hand do you wish to attack?");
                     victim = attackReader.nextInt();
@@ -121,6 +136,8 @@ public class Chopsticks {
                         System.out.println("                      That hand is DEAD");
                     }
                 } while (victim != 2);
+
+                // if attacking hand 2...
             } else if (victim == 2 && attacked.getHand2() == 0) {
                 System.out.println("                      That hand is DEAD");
                 do {
