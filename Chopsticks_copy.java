@@ -1,4 +1,6 @@
+// Imports
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Chopsticks_copy {
     public static void main(String[] args) {
@@ -74,41 +76,84 @@ public class Chopsticks_copy {
 
     // Attack the opponent
     public static void attack(Player one, Player two, int turn) {
+        // Creating local method variables
         Scanner attackReader = new Scanner(System.in);
-        int victim;
-        int attack;
+        int victim = 0;
+        int attack = 0;
+        boolean exceptionFlag = true;
+
+        // Starting 'check' loop
         do {
             System.out.println("                Which hand do you wish to attack?");
-            victim = attackReader.nextInt();
-            System.out.println("               Which hand do you wish attack with?");
-            attack = attackReader.nextInt();
-        } while (attack != 1 && attack != 2 && victim != 1 && victim != 2);
+            while (exceptionFlag) {
+                try {
+                    victim = attackReader.nextInt();
+                } catch (InputMismatchException e) {
+                    System.out.println("Thats not a Valid Input! (Try typing \"1\" or \"2\". \nYou can also use \"L\" and \"R\"!)");
+                    attackReader.next();
+                    exceptionFlag = false;
+                }
+                if (exceptionFlag == false) {
+                    exceptionFlag = true;
+                } else {
+                    exceptionFlag = false;
+                }
+            }
+            exceptionFlag = true;
+            do {
+                System.out.println("               Which hand do you wish attack with?");
+                while (exceptionFlag) {
+                    try {
+                        attack = attackReader.nextInt(); 
+                    } 
+                    catch (InputMismatchException e) {
+                        System.out.println("Thats not a Valid Input! (Try typing \"1\" or \"2\". \nYou can also use \"L\" and \"R\"!)");
+                        attackReader.next();
+                        exceptionFlag = false;
+                    }
+                    if (exceptionFlag == false) {
+                        exceptionFlag = true;
+                    } else {
+                        exceptionFlag = false;
+                    }
+                }
+            } while (victim != 1 && victim != 2);
+
+        } while (attack != 1 && attack != 2
+        /* || attack != 'L' && attack != 'R' && victim != 'L' && victim != 'R' */);
         if ((turn - 1) % 2 == 0) {
-            if (attack == 1) {
+            if (attack == 1 && one.getHand1() > 0) {
                 attack = one.getHand1();
-            } else if (attack == 2) {
+            } else if (attack == 2 && one.getHand2() > 0) {
                 attack = one.getHand2();
+            } else {
+
             }
 
-            if (victim == 1) {
+            if (victim == 1 && two.getHand1() > 0) {
                 victim = two.getHand1();
                 if (victim + attack > 5) {
                     two.setHand1((victim + attack) - 5);
+                    turn++;
                 } else if (victim + attack == 5) {
                     two.setHand1(0);
+                    turn++;
                 } else {
                     two.setHand1(victim + attack);
+                    turn++;
                 }
-            } else if (victim == 2) {
+            } else if (victim == 2 && two.getHand2() > 0) {
                 victim = two.getHand2();
                 if (victim + attack > 5) {
                     two.setHand2((victim + attack) - 5);
+                    turn++;
                 } else if (victim + attack == 5) {
                     two.setHand2(0);
+                    turn++;
                 } else {
                     two.setHand2(victim + attack);
+                    turn++;
                 }
-                attackReader.close();
 
             }
 
@@ -123,23 +168,30 @@ public class Chopsticks_copy {
                 victim = one.getHand1();
                 if (victim + attack > 5) {
                     one.setHand1((victim + attack) - 5);
+                    turn++;
                 } else if (victim + attack == 5) {
                     one.setHand1(0);
+                    turn++;
                 } else {
                     one.setHand1(victim + attack);
+                    turn++;
                 }
             } else if (victim == 2) {
                 victim = one.getHand2();
                 if (victim + attack > 5) {
                     one.setHand2((victim + attack) - 5);
+                    turn++;
                 } else if (victim + attack == 5) {
                     one.setHand2(0);
+                    turn++;
                 } else {
                     one.setHand2(victim + attack);
+                    turn++;
                 }
             }
         }
     }
+
 
     // Checking the end of the game
     public static void endGame(Player one, Player two) {
