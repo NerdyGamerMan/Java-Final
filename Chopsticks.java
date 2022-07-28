@@ -1,3 +1,18 @@
+/*
+ * Ansh and Vrishabh's Chopsticks Game
+ * First Functional Version Released: 07/21/2022 @ 10:16pm
+ * 
+ * This was a fun project, and we got to use exception handling
+ * to improve the quality of the code!
+ * 
+ * Authors: @Ansh_Shah & @Vrishabh_Gupta
+ * 
+ */
+
+// Import InputMismatchException to prevent invalid inputs
+import java.util.InputMismatchException;
+
+// Import Scanner to utilize Scanner Objects
 import java.util.Scanner;
 
 //BUGS:
@@ -107,8 +122,8 @@ public class Chopsticks {
         Scanner attackReader = new Scanner(System.in);
         Player attacker = new Player();
         Player attacked = new Player();
-        int victim;
-        int attack;
+        int victim = 0;
+        int attack = 0;
 
         // setting attacker and attacked (attacking player and defending player)
         if (turn % 2 == 0) {
@@ -122,7 +137,8 @@ public class Chopsticks {
         // Running Attack Sequence
         do {
             System.out.println("                Which hand do you wish to attack?");
-            victim = attackReader.nextInt();
+
+            victim = inputHandle();
 
             // if attacking hand 1...
             if (victim == 1 && attacked.getHand1() == 0) {// checking if attacking dead hand
@@ -131,7 +147,7 @@ public class Chopsticks {
                 // repeating input until valid
                 do {
                     System.out.println("                Which hand do you wish to attack?");
-                    victim = attackReader.nextInt();
+                    victim = inputHandle();
                     if (victim == 1 && attacked.getHand1() == 0) {
                         System.out.println("                      That hand is DEAD");
                     }
@@ -142,19 +158,19 @@ public class Chopsticks {
                 System.out.println("                      That hand is DEAD");
                 do {
                     System.out.println("                Which hand do you wish to attack?");
-                    victim = attackReader.nextInt();
+                    victim = inputHandle();
                     if (victim == 2 && attacked.getHand2() == 0) {
                         System.out.println("                      That hand is DEAD");
                     }
                 } while (victim != 1);
             }
             System.out.println("               Which hand do you wish attack with?");
-            attack = attackReader.nextInt();
+            attack = inputHandle();
             if (attack == 1 && attacker.getHand1() == 0) {
                 System.out.println("                      That hand is DEAD");
                 do {
                     System.out.println("               Which hand do you wish attack with?");
-                    attack = attackReader.nextInt();
+                    attack = inputHandle();
                     if (attack == 1 && attacker.getHand1() == 0) {
                         System.out.println("                      That hand is DEAD");
                     }
@@ -163,7 +179,7 @@ public class Chopsticks {
                 System.out.println("                      That hand is DEAD");
                 do {
                     System.out.println("               Which hand do you wish attack with?");
-                    attack = attackReader.nextInt();
+                    attack = inputHandle();
                     if (attack == 2 && attacker.getHand2() == 0) {
                         System.out.println("                      That hand is DEAD");
                     }
@@ -232,20 +248,50 @@ public class Chopsticks {
         Scanner splitRead = new Scanner(System.in);
         int splitAmount = 0;
         int handNum = 0;
+        boolean endLoop = false;
+
         do {
             System.out.println("                   How much do you want to split: ");
             splitAmount = splitRead.nextInt();
             System.out.println("                Which hand do you want to split off: ");
             handNum = splitRead.nextInt();
-        } while (handNum != 1 && handNum != 2);
-        if (handNum == 1 && splitAmount <= player.getHand1() && player.getHand1() > 0) {
-            player.setHand2(player.getHand2() + splitAmount);
-            player.setHand1(player.getHand1() - splitAmount);
-        } else if (handNum == 2 && splitAmount <= player.getHand2() && player.getHand2() > 0) {
-            player.setHand1(player.getHand1() + splitAmount);
-            player.setHand2(player.getHand2() - splitAmount);
-        } else {
-            System.out.println("                            Invalid Input");
+
+            if (handNum == 1 && splitAmount <= player.getHand1() && player.getHand1() > 0
+                    && player.getHand2() + splitAmount < 5) {
+                player.setHand2(player.getHand2() + splitAmount);
+                player.setHand1(player.getHand1() - splitAmount);
+                endLoop = true;
+            } else if (handNum == 2 && splitAmount <= player.getHand2() && player.getHand2() > 0
+                    && player.getHand1() + splitAmount < 5) {
+                player.setHand1(player.getHand1() + splitAmount);
+                player.setHand2(player.getHand2() - splitAmount);
+                endLoop = true;
+            } else {
+                System.out.println("                    No breaking the Game!");
+            }
+        } while (endLoop == false);
+    }
+
+    public static int inputHandle() {
+        int arg = 0;
+        boolean exceptionFlag = true;
+        Scanner input = new Scanner(System.in);
+        while (exceptionFlag) {
+            try {
+                arg = input.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println(
+                        "                    Thats not a Valid Input!\n                    (Try typing \"1\" or \"2\"!)");
+                input.next();
+                exceptionFlag = false;
+            }
+            if (exceptionFlag == false) {
+                exceptionFlag = true;
+            } else {
+                exceptionFlag = false;
+            }
         }
+        return arg;
+
     }
 }
